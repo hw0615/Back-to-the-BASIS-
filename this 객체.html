@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>This 객체</title>
+</head>
+<body>
+
+  <ul id="gnb">
+    <li>click</li>
+    <li>second</li>
+    <li>third</li>
+  </ul>
+
+  <script>
+    // 문서 객체 선택
+    var gnb = document.getElementById('gnb');
+    var li = gnb.getElementsByTagName('li');
+    // 첫 번째 목록 클릭 시 스타일 변경
+    li[0].onclick = function() {
+      this.style.backgroundColor = 'red';
+    }
+  </script>
+</body>
+</html>

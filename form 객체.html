@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Form 객체</title>
+  <style>
+    label {
+      float: left;
+      width: 80px;
+    }
+    input, label {
+      display: block;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <form name="frm">
+    <label for="myId">ID: </label>
+    <input type="text" name="myId" id="myId">
+    <label for="pwd">password: </label>
+    <input type="password" name="pwd" id="pwd">
+
+    <input type="button" name="send" value="로그인">
+  </form>
+
+  <form name="frm2">
+    <input type="text" name="text">
+    <input type="button" onclick="put_text()" value="click">
+  </form>
+
+  <script>
+    var frm = document.frm;
+    var myId = frm.myId;
+    var pwd = frm.pwd;
+    var send_btn = document.frm.send
+
+    send_btn.onclick = function() {
+      var newId = myId.value,
+          newPwd = pwd.value;
+
+      if ( newId === '' || newPwd === '') {
+        alert('아이디 또는 비밀번호가 입력되지 않았습니다.');
+      } else {
+        alert(myId.value + '님 환영합니다.');
+      }
+    };
+
+    function put_text() {
+      // form 객체 내의 name='text'인 입력 요소 지정
+      var frm2 = document.forms['frm2']['text'];
+
+      frm2.value = '값을 입력';
+    }
+  </script>
+</body>
+</html>

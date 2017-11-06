@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Test</title>
+  <style>
+    #box {
+      height: 100px;
+      width: 100px;
+      border: 2px solid #000;
+    }
+    .red {
+      background-color: red;
+    }
+    .blue {
+      background-color: blue;
+    }
+
+    #touch-box {
+      position: relative;
+      width: 200px; 
+      height: 200px;
+      border: 3px solid #000;
+    }
+
+    #add-btn {
+      padding: 5px 10px;
+      border: 0;
+      background: #f80;
+      color: white;
+      border-radius: 5px;
+    }
+    ul {
+      padding: 0;
+      list-style-position: inside;
+    }
+    li {
+      border-bottom: 1px solid #999;
+      padding: 5px 0;
+      list-style: none;
+    }
+    .active {
+      background: #abc;
+    }
+  </style>
+</head>
+<body>
+  <div class="box-container">
+    <div id="box"></div>
+    <button id="red" type="button">red</button>
+    <button id="blue" type="button">blue</button>
+  </div>
+
+  <div class="form-container">
+    <form id="frm">
+      <fieldset>
+        <legend>주소록</legend>
+        <textarea name="txt" id="txt" rows="10" cols="30"></textarea><br>
+        <input type="submit" id="q" value="불러오기">
+      </fieldset>
+    </form>
+  </div>
+
+  <div class="touch-container">
+    <h1>터치 이벤트</h1>
+    <div id="touch-box">
+      <p>나를 터치해 주세요</p>
+    </div>
+  </div>
+
+  <div class="todo-container">
+    <h1 id="title">할 일 목록</h1><hr>
+      <button id="add-btn">목록 추가</button>
+
+      <ul id="list">
+        <li>제목 1</li>
+        <li>제목 2</li>
+        <li>제목 3</li>
+        <li>제목 4</li>
+      </ul>
+  </div>
+
+  <script>
+
+    //////////////////////////// change box color 
+    
+    var box = document.getElementById('box');
+    var red_button = document.getElementById('red');
+    var blue_button = document.getElementById('blue');
+    
+    red_button.addEventListener('click', changeColor);
+    blue_button.addEventListener('click', changeColor);
+
+    function changeColor(e) {
+      var target = e.target
+      if ( target.id === 'red' ) {
+        box.setAttribute('class', 'red')
+      } else if ( target.id === 'blue' ) {
+        box.setAttribute('class', 'blue')
+      }
+    }
+
+    //////////////////////////// submit / preventDefault()
+
+    var address = ['김만수', 'email: kms@kms.com'];
+
+    // 폼 객체 지정
+    var q = document.getElementById('frm');
+
+    function addr_search(e) {
+      var textarea = q.txt;
+
+      // textarea에 주소록 표시
+      textarea.value = '이름 / 주소 \n';
+      textarea.value += address[0] + ', ' + address[1] + '\n';
+    }
+    
+    // 폼 제출 시 
+    q.addEventListener('submit', function(e) {
+      e.preventDefault(); // 기본 이벤트 해제
+      addr_search(); // 주소록 불러오기
+    })
+
+    //////////////////////////// touch event, drag & drop
+
+    var touchBox = document.getElementById('touch-box');
+
+    // 터치 제어를 위한 객체 선언
+    var touch = {
+      start: function() {
+        touchBox.innerHTML = '나를 건드렸군요!!';
+        this.style.background = 'red';
+      },
+      end: function() {
+        touchBox.innerHTML = '손을 떼었군요!!';
+        this.style.background = '';
+      },
+      move: function(e) {
+        // 현재 터치 이벤트의 위치(배열) 감지
+        var touchobj = e.changedTouches[0];
+
+        // 현재 손가락 위치
+        var x = parseInt(touchobj.clientX),
+            y = parseInt(touchobj.clientY),
+            ex = x - 100;
+            ey = y - 200;
+
+        touchBox.innerHTML = '만지는 중 입니다.';
+        this.style.background = 'yellow';
+
+        this.style.left = ex+'px';
+        this.style.top = ey+'px';
+      }
+    }
+
+
+    // 터치 이벤트 리스터 
+    touchBox.addEventListener('touchstart', touch.start);
+    touchBox.addEventListener('touchend', touch.end);
+    touchBox.addEventListener('touchmove', touch.move);
+
+    //////////////////////////// 홀짝
+    
+    function isODD(num) {
+      if (num % 2 === 0) {
+        document.write(num + '은(는)' + ' ' + '짝수입니다.')
+      } else if (num % 2 === 1 ) {
+        document.write(num + '는(은)' + ' ' + '홀수입니다.')
+      }
+    }
+
+    //////////////////////////// 구구단
+
+    var num = prompt('구구단 몇 단을 볼까요?', '1~9의 숫자 입력');
+
+    // 입력 검사
+    if( num === '' || isNaN(num) ) {
+      alert( '올바른 값을 입력하세요.' )
+    } else if ( num < 1 || num > 10 ) {
+      // 구구단 범위 체크
+      alert( '1부터 9까지를 입력할 수 있습니다.' )
+    } else {
+      // 구구단 계산
+      for ( var i = 1; i < 10; i++) {
+        document.write( num + '*' + i + '=' + num * i + '<br>');
+      }
+    }
+    
+    //////////////////////////// todo list
+
+    // 변수 초기화
+    var title = document.getElementById('title');
+    var list = document.getElementById('list');
+    var li = list.getElementsByTagName('li');
+    var addBtn = document.getElementById('add-btn'); 
+
+    for ( var i = 0; i < li.length; i++) {
+      list.addEventListener('click', activeItem);
+    }
+
+    function activeItem(e) {
+      if( e.target.nodeName === 'LI' ){
+        title.innerHTML = e.target.innerText;
+
+        // 목록 스타일 초기화
+        for ( var i = 0; i < e.target.parentNode.children.length; i++ ) {
+          e.target.parentNode.children[i].removeAttribute('class');
+        } 
+        // 클릭한 목록 스타일 지정
+        e.target.setAttribute('class', 'active');
+      }
+    }
+
+    addBtn.addEventListener('click', function(){
+      var txt = prompt('제목 입력');
+      list.innerHTML += '<li>' + txt + '</li>';
+    });
+  </script>
+</body>
+</html>

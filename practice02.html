@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>이미지 교체</title>
+</head>
+<body>
+  <img src="http://placehold.it/200x100/abc?text=img1" alt="img1" name="img1">
+  <img src="http://placehold.it/200x100/cba?text=img2" alt="img2" name="img2">
+  <img src="http://placehold.it/200x100/bac?text=img3" alt="img3" name="img3">
+  <div>
+    <button onclick="changeImg()">change image</button>
+  </div>
+
+<script>
+  function changeImg() {
+    var img1 = document.img1,
+        img3 = document.img3,
+        src1 = img1.getAttribute('src'),
+        src3 = img3.getAttribute('src');
+
+    img1.src = src3;
+    img3.src = src1;
+  }
+
+</script>
+</body>
+</html>
+
+

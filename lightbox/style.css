@@ -49,7 +49,7 @@ figure {
 
 figure img {
   display: none;
-  position: absolute;
+  position: absolute;  
 }
 
 figure img.active {

@@ -1,31 +1,31 @@
-// 날짜 변수 2017년 11월
-var new_year = 2017,
-    new_month = 11,
+// // 날짜 변수 2017년 11월
+// var new_year = 2017,
+//     new_month = 11,
 
-// 특정 연월을 시작일부터 조회 (year, month, date)
-    d = new Date(new_year, new_month, 1),
+// // 특정 연월을 시작일부터 조회 (year, month, date)
+//     d = new Date(new_year, new_month, 1),
 
-// 월별 일수 구하기
-    d_length = 32 - new Date(new_year, new_month, 32).getDate(),
-    year = d.getFullYear(),
-    month = d.getMonth(),
-    date = d.getDate(),
-    day = d.getDay();
+// // 월별 일수 구하기
+//     d_length = 32 - new Date(new_year, new_month, 32).getDate(),
+//     year = d.getFullYear(),
+//     month = d.getMonth(),
+//     date = d.getDate(),
+//     day = d.getDay();
 
-// caption 영역 날짜 표시 객체
-var caption_year = document.querySelector('.year'),
-    caption_month = document.querySelector('.month');
-var start_day = document.querySelectorAll('tr td');
+// // caption 영역 날짜 표시 객체
+// var caption_year = document.querySelector('.year'),
+//     caption_month = document.querySelector('.month');
+// var start_day = document.querySelectorAll('tr td');
 
-// 한 달 치 날짜를 테이블에 시작 요일부터 순서대로 표시
-for (var i = day; i < day + d_length; i++) {
-  start_day[i].innerHTML = date;
-  date++;
-}
+// // 한 달 치 날짜를 테이블에 시작 요일부터 순서대로 표시
+// for (var i = day; i < day + d_length; i++) {
+//   start_day[i].innerHTML = date;
+//   date++;
+// }
 
-// caption 연도, 월 표시
-caption_year.innerHTML = year;
-caption_month.innerHTML = month + 1;
+// // caption 연도, 월 표시
+// caption_year.innerHTML = year;
+// caption_month.innerHTML = month + 1;
 
 
 // calendar 함수
@@ -59,3 +59,24 @@ function calendar(new_year, new_month) {
     caption_year.innerHTML = year;
     caption_month.innerHTML = month + 1;
 }
+
+(function (){
+  var prev = document.getElementById('prev'),
+      next = document.getElementById('next'),
+      year = new Date().getFullYear(),
+      month = new Date().getMonth() + 1;
+  
+  calendar(year, month);
+
+  // 이전 달, 다음 달 버튼 이벤트 핸들러
+  prev.onclick = function() {
+    calendar(year, --month);
+    console.log(month)
+  };
+  next.onclick = function() {
+    calendar(year, ++month);
+    console.log(month)
+  }
+   
+})();
+

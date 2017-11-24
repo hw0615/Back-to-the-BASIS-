@@ -1,9 +1,9 @@
-var banner = document.getElementById('banner'),
-    img = banner.getElementsByTagName('img'),
-    toggle = document.getElementById('toggle'),
-    sound_btn = document.getElementById('sound_btn');
+var $banner = $('#banner'),
+    $img = $banner.find('img'),
+    $toggle = $('#toggle'),
+    $sound_btn = $('#sound_btn');
 
-var banner_height = getComputedStyle(banner).height;
+var $banner_height = $banner.css('height');
 var cast = [];
 
 // 풍선 객체 생성 함수 
@@ -41,37 +41,40 @@ function set_balloon(num) {
 
 // 풍선 객체 초기화 함수
 function ball_init() {
-  for ( var i = 0; i < img.length; i++ ){
+  $img.each(function(i){
+    // 풍선 객체들의 속성 초기화
     set_balloon(i);
-    img[i].style.left = '-9999px';
-    img[i].style.top = '-9999px';
-  }
+    $img.eq(i) 
+      .css('left', '-9999px')
+        .css('top', '-9999px'); 
+  });
 }
 ball_init();
 
 // 풍선 애니메이션 함수
 function animate_balloon() {
-  for ( var i = 0; i < img.length; i++ ) {
+  $img.each(function(i) {
     // 풍선 속성 변경
-    img[i].style.left = cast[i].x + 'px'; // x 좌표
-    img[i].style.top = cast[i].y + 'px'; // y 좌표
-    img[i].style.transform = 'rotate(' + cast[i].angle + 'deg)'; // 회전
+    $img.eq(i)
+      .css('left', cast[i].x + 'px')
+      .css('top', cast[i].y + 'px')
+      .css('transform', 'rotate(' + cast[i].angle + 'deg)');  
 
     // 풍선이 화면 안에 있으면
-    if ( cast[i].y < parseInt(banner_height)) {
+    if ( cast[i].y < parseInt($banner_height)) {
       cast[i].y += 1 + cast[i].speed;
       cast[i].angle += cast[i].speed;
     } else { // 풍선이 화면 밖으로 나가면
       set_balloon(i)
     }
-  }
+  })
 }
 
 function bgm_init() {
   var bgm = new Audio();
   bgm.src = 'images/bgm.mp3';
   bgm.loop = true;
-  document.body.appendChild(bgm);
+  $('body').append(bgm);
 }
 
 /* ---------------------------------------- */
@@ -84,44 +87,44 @@ bgm_init();
 
 /* ---------------------------------------- */
 // 사운드 버튼 이벤트 핸들러
-sound_btn.onclick = function(e) {
-  var attr = sound_btn.getAttribute('class');       // 사운드 버튼의 class 속성
-  var bgm = document.getElementsByTagName('audio')  // audio 객체
+$sound_btn.click(function(e) {
+  var attr = $(this).attr('class');       // 사운드 버튼의 class 속성
+  var bgm = $('audio')  // audio 객체
 
   if (attr === 'active') {
     // 사운드 off
-     sound_btn.removeAttribute('class');                    // 클래스 제거
-     sound_btn.setAttribute('src', 'images/sound_off.png'); // 버튼 이미지 교체
+     $(this).removeAttr('class');                    // 클래스 제거
+     $(this).attr('src', 'images/sound_off.png'); // 버튼 이미지 교체
      bgm[0].pause();  // bgm 정지
   } else {
     // 사운드 on
-    sound_btn.setAttribute('class', 'active');
-    sound_btn.setAttribute('src', 'images/sound_on.png');
+    $(this).attr('class', 'active');
+    $(this).attr('src', 'images/sound_on.png');
     bgm[0].play();  // bgm 재생
   }
   e.stopPropagation();
-}
+});
 
 // 배너 열기 / 닫기 버튼 이벤트 핸들러
-toggle.onclick = function() {
-  var attr = banner.getAttribute('class');
+$toggle.click(function() {
+  var attr = $banner.attr('class');
 
   if (attr == 'active') {
     // 배너 닫기
-    banner.removeAttribute('class');
-    toggle.innerHTML = '배너 열기';
+    $banner.removeAttr('class');
+    $(this).html('배너 열기');
     return false;
   } else {
     // 배너 열기
-    banner.setAttribute('class', 'active');
-    toggle.innerHTML = '배너 닫기';
+    $banner.attr('class', 'active');
+    $(this).html('배너 닫기');
     return false;
   }
-};
+});
 
 // 배너 링크 처리
-banner.onclick = function() {
+$banner.click(function() {
   // window.open('https://csslick.github.io/', '_blank');
   window.open('https://naver.com/', '_blank');
-}
+})
 

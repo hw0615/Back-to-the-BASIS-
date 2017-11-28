@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>      
+  <title>Color</title>
+</head>
+<body>
+  <textarea name="txt" id ="txt" rows="10" cols="30"></textarea><br>
+  <label for="textcolor">change text color</label>
+  <input type="color" id="textcolor"><br>
+  <label for="bgcolor">change bg color</label>
+  <input type="color" id="bgcolor"><br>
+
+  <button id="set_color">set color</button>
+  <button id="get_color">get color</button>
+  <script>
+    // -------------------------------------------------------------------
+    // setItem(key, value) - 메서드  / 해당 키 값의 이름으로 데이터를 저장합니다.
+    // getItem(key)        - 메서드  / 해당 키 값의 이름을 가진 데이터를 가져옵니다.
+    // removeItem(key)     - 메서드  / 해당 키 값의 이름을 가진 데이터를 삭제합니다.
+    // key(index)          - 메서드  / 해당 인덱스 값을 가진 키의 이름을 가져옵니다.
+    // clear               - 메서드  / 모든 데이터를 삭제합니다.
+    // length              - 속성   / 저장된 데이터의 수를 가져옵니다.
+    
+    // 저장
+    localStorage.setItem('name', 'pikachu');
+    
+    // 읽기
+    var getValue = localStorage.getItem('name');
+    console.log(getValue);
+
+    // 삭제
+    localStorage.removeItem('name');
+    // -------------------------------------------------------------------
+
+    // 글상자에 글자를 입력
+    $('#txt').val('글상자 영역의 색상 값을 저장합니다.');
+
+    // 글자색 변경 시 글상자의 글자색에 적용
+    $('#textcolor').change(function() {
+      var color = $(this).val();
+      $('#txt').css('color', color);
+    });
+
+    // 배경색 변경 시 글상자의 배경색에 적용
+    $('#bgcolor').change(function() {
+      var color = $(this).val();
+      $('#txt').css('backgroundColor', color);
+    });
+
+
+    // 글자색과 배경색을 로컬 스토리지에 저장
+    $('#set_color').click(function() {
+      var bgcolor = $('#bgcolor').val();
+      var textcolor = $('#textcolor').val();
+      // localStorage.setItem('bgcolor', bgcolor);
+      // localStorage.setItem('textcolor', textcolor);
+
+      var obj = {
+        bgcolor : bgcolor,
+        textcolor : textcolor
+      }
+      // 색상 설정 객체를 저장
+      localStorage.setItem('color', JSON.stringify(obj));
+    });
+
+    // 저장한 환경 설정을 읽어 옴
+    $('#get_color').click(function() {
+      // var bgcolor = localStorage.getItem('bgcolor');
+      // var textcolor = localStorage.getItem('textcolor');
+
+      var color = JSON.parse(localStorage.getItem('color')); 
+
+      $('#txt').css({
+        'backgroundColor' : color.bgcolor,
+        'color' : color.textcolor
+      });
+    });
+
+
+    // 자바스크립트에서는 데이터를 외부(웹 스토리지나 서버 등)와 구조받는 경우 JSON 표준 형식을 이용한다.
+    // 데이터를 내보낼 경우에는 먼저 데이터를 문자열(string)로 변환해 주어야 한다.
+    // 따라서 객체 형태의 데이터를 스트링으로 변환하기 위해 JSON.stringify() 메서드를 사용해 문자열로 변환시켜 저장한다.
+
+    // 반대로 가져올 때는 JSON.parse() 메서드를 이용해 문자열을 객체로 변환한다.
+  </script>
+</body>
+</html>

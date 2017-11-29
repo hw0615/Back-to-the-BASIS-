@@ -113,6 +113,31 @@ $(function() {
     $(this).parent().draggable();
   })
 
+  /* ---------------------------------------------------------------------- */
+  // 터치 입력
+  $('#sticky_wrap').on('touchstart mousedown', '.sitcky', function() {
+    $('.sticky').css('zIndex', '0');
+    $(this).css('zIndex', '99');
+  });
+
+  $('#sticky_wrap').on('touchmove', '.top_nav', function(e) {
+    var $sticky = $(this).parent();
+    var event = e.originalEvent;
+    var touchobj = event.changedTouches[0];
+
+    // 현재 손가락 위치
+    var x = parseInt(touchobj.clientX),
+        y = parseInt(touchobj.clientY),
+        ex = x - 125;
+        ey = y - 16;
+
+    // 메모장 위치 지정
+    $sticky.css('left', ex + 'px');
+    $sticky.css('top', ey + 'px');
+  });
+
+
+
 	// 메모장 초기화
 	$('#sticky_wrap').append(sticky_html);
-})
+});

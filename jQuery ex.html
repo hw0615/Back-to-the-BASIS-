@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>        
+</head>
+<body>
+  <h3>그래프를 클릭</h3>
+  <progress value="0" min="0" max="100"></progress>
+  <span id="info"></span>
+  <br>
+  <button id="btn" style="padding: 10px;">click</button>
+  <script>
+    $(function() {
+      var val = 0
+
+      // 클릭 시 그래프 증가
+      $('progress').on('click', function() {
+        $(this).val(val);
+        $('#info').html(val);
+        if (val < 100) {
+          val += 10;
+        }
+      })
+    })
+
+    $(function() {
+      // 두 이벤트를 동시에 연결
+      $('#btn').on('mouseenter mouseleave', function(e) {
+        // 이벤트 타입을 검사
+         if(e.type == 'mouseenter') {
+           $(this).css('border-radius', '10px');
+         }
+         if(e.type == 'mouseleave') {
+           $(this).css('border-radius', '0px');
+         }
+         // 이벤트가 발생했을 때 어떤 이벤트가 발생했는지 검사하는 속성은 e.type
+         // 이벤트 타입을 확인해 각각의 속성을 적용할 수 있다.
+      })
+    })
+  </script>
+</body>
+</html>
